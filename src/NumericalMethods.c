@@ -4,6 +4,21 @@
 #include <gsl/gsl_vector.h>
 #import "../headers/NumericalMethods.h"
 
+// Does a = a + b, where a and b are vectors.
+void vAdd(Vector *a, Vector *b){
+  for (int k = 0; k < a->size; k++){
+    a->elements[k] += b->elements[k];
+  }
+  return;
+}
+
+// Does a = r*a, where r is a scalar and a is a vector.
+void vMul(Vector *a, double r){
+  for (int k = 0; k < a->size; k++){
+    a->elements[k] *= r;
+  }
+}
+
 ODEContext *makeODEContext(double eps, int size, double *initCondsVec, double *(*ODE)(double x, double *y, double *dV)){
     ODEContext *context = malloc(sizeof(ODEContext));
     if (context){
@@ -22,7 +37,7 @@ ODEContext *makeODEContext(double eps, int size, double *initCondsVec, double *(
     return NULL;
 }
 
-void eulersMethod(ODEContext *c, double a, double b){
+double* eulersMethod(ODEContext *c, double a, double b){
     //get pointers to things in the context
     double *approxVec = c->approximations;
     double *aux_mem = c->aux_memory;
@@ -38,10 +53,8 @@ void eulersMethod(ODEContext *c, double a, double b){
     for (int k = 0; k <= n; k++){ //time step loop
         double t = a + k*h; //update time step
         for (int i = 0; i < size; i++) { //iterates the solver method over the solution vector.
-            approxVec[i] = approxVec[i] + h*(ode(t, approxVec, aux_mem)[i]); //eulers method for a vector.
-            if (i == 0) {
-                printf("%f\n", approxVec[i]);
-            }
+          approxVec[i] = approxVec[i] + h*(ode(t, approxVec, aux_mem)[i]); //eulers method for a vector.
         }
     }
+    return approxVec;
 }

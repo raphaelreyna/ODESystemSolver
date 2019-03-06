@@ -18,7 +18,8 @@ int main(int argc, const char * argv[])
     double initConditions[2] = {0.0, 1.0};
     double *i = (double *)&initConditions;
     ODEContext *context = makeODEContext(0.0001, 2, i, ODE);
-    eulersMethod(context, 0, M_PI_4);
+    double* value = eulersMethod(context, 0, M_PI_4);
+    printf("Value 1: %f, Value 2: %f\n", value[0],value[1]);
 }
 
 
