@@ -1,5 +1,7 @@
 #ifndef NumericalMethods_h
 #define NumericalMethods_h
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_vector.h>
 
 typedef struct ODEContext {
     double *approximations;

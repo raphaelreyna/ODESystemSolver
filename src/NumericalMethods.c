@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_vector.h>
 #import "../headers/NumericalMethods.h"
 
 ODEContext *makeODEContext(double eps, int size, double *initCondsVec, double *(*ODE)(double x, double *y, double *dV)){
