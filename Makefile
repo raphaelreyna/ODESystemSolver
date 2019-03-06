@@ -17,6 +17,3 @@ hiw.tex:
 
 clean:
 	rm *.o
-	rm *.aux
-	rm *.log
-	rm *.tex
