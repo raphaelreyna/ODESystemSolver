@@ -1,30 +1,30 @@
 #ifndef NumericalMethods_h
 #define NumericalMethods_h
-<<<<<<< HEAD
-#include <gsl/gsl_matrix.h>
-#include <gsl/gsl_vector.h>
-=======
 #import <stdlib.h>
 
 typedef struct Vectors {
   size_t size;
   double *elements;
 } Vector;
->>>>>>> master
+
+typedef struct Matrices {
+  size_t size;
+  Vector **rows;
+} Matrix;
 
 typedef struct ODEContext {
-    double *approximations;
-    double *aux_memory;
-    double* (*ODE)(double x, double *y, double *dV);
-    double epsilon;
-    int systemSize;
+  Vector *yBar;
+  Vector *yBarPrime;
+  Vector *dirtyVector;
+  Matrix *ODESystem;
+  double epsilon;
+  int systemSize;
+  unsigned long steps;
+  short done;
 } ODEContext;
 
-ODEContext *makeODEContext(double epsilon, int size, double *initCondsVec, double *(*ODE)(double x, double *y, double *dV));
+ODEContext *makeODEContext(double eps, int size, Matrix *odeSystem, Vector *yBar, double a, double b);
 
-double* eulersMethod(ODEContext *context, double a, double b);
-void secantMethod(double (*f)(double), double *x_0, double *x_1, double epsilon);
-void bisectionMethod(double (*f)(double), double *xa, double *xb, double epsilon);
-
-
+void eulersMethodStep(ODEContext *context);
+void eulersMethod(ODEContext *context);
 #endif

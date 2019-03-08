@@ -1,13 +1,13 @@
-all: solver clean
+all: solver
 
 solver: nm.o main.o
-	gcc nm.o main.o -o solver
+	gcc -g nm.o main.o -lm -o solver
 
 nm.o:
-	gcc -c src/NumericalMethods.c -o nm.o
+	gcc -g -c src/NumericalMethods.c -o nm.o
 
 main.o:
-	gcc -c src/main.c -o main.o
+	gcc -g -c src/main.c -o main.o
 
 HowItWorks.pdf: hiw.tex
 	pdflatex -interaction=nonstopmode hiw.tex -o HowItWorks.pdf
@@ -17,3 +17,9 @@ hiw.tex:
 
 clean:
 	rm *.o
+
+run: solver
+	./solver
+
+debug: solver
+	lldb solver

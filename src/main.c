@@ -1,27 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #import "../headers/NumericalMethods.h"
 
-//ODE System, this is a vector function, takes the independent param (scalar),
-//the solution vector, and a temp vector for dirty work.
-//(this temp vector is not declared in the function so that it may be reused)
-double *ODE(double x, double *y, double *System){
-    System[0] = y[1];
-    System[1] = -y[0];
-    return System;
-}
-
-//Standard, main function, nothing interesting here.
 int main(int argc, const char * argv[])
 {
-    double initConditions[2] = {0.0, 1.0};
-    double *i = (double *)&initConditions;
-    ODEContext *context = makeODEContext(0.0001, 2, i, ODE);
-    double* value = eulersMethod(context, 0, M_PI_4);
-    printf("Value 1: %f, Value 2: %f\n", value[0],value[1]);
+  Vector *yBar = malloc(sizeof(Vector));
+  yBar->size = 2;
+  yBar->elements = malloc(sizeof(double)*2);
+  *(yBar->elements) = 1.0;
+  *(yBar->elements+1) = 1.0;
+
+  Vector *row0 = malloc(sizeof(Vector));
+  row0->size = 2;
+  row0->elements = malloc(sizeof(double)*2);
+  *(row0->elements) = 3.0;
+  *(row0->elements+1) = -5.0;
+
+  Vector *row1= malloc(sizeof(Vector));
+  row1->size = 2;
+  row1->elements = malloc(sizeof(double)*2);
+  *(row1->elements) = 2.0;
+  *(row1->elements+1) = 0.7;
+
+  Matrix *m = malloc(sizeof(Matrix));
+  m->size = 2;
+  m->rows = malloc(sizeof(Vector*)*2);
+  *(m->rows) = row0;
+  *(m->rows+1) = row1;
+
+  ODEContext *context = makeODEContext(0.00001, 2, m, yBar, 0.0, 1.0);
+  eulersMethod(context);
+  printf("Steps taken: %lu \n", context->steps);
+  printf("Value of f1: %f, Value of f2: %f\n", yBar->elements[0], yBar->elements[1]);
+  freeODEContext(context);
+  free(yBar->elements);
+  free(yBar);
+  free(row0->elements);
+  free(row0);
+  free(row1->elements);
+  free(row1);
+  free(m->rows);
+  free(m);
 }
-
-
-
-
