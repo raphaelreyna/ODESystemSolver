@@ -1,10 +1,13 @@
 all: solver
 
-solver: nm.o main.o
-	gcc -g nm.o main.o -lm -o solver
+solver: nm.o vma.o main.o
+	gcc -g nm.o vma.o main.o -lm -o solver
 
 nm.o:
 	gcc -g -c src/NumericalMethods.c -o nm.o
+
+vma.o:
+	gcc -g -c src/VectorMatrixAlgebra.c -o vma.o
 
 main.o:
 	gcc -g -c src/main.c -o main.o

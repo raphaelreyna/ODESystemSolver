@@ -1,0 +1,4 @@
+solver
+*.o
+*.pdf
+auto/

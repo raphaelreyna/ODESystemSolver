@@ -1,18 +1,9 @@
 #ifndef NumericalMethods_h
 #define NumericalMethods_h
 #import <stdlib.h>
+#import "VectorMatrixAlgebra.h"
 
-typedef struct Vectors {
-  size_t size;
-  double *elements;
-} Vector;
-
-typedef struct Matrices {
-  size_t size;
-  Vector **rows;
-} Matrix;
-
-typedef struct ODEContext {
+typedef struct ODEContexts {
   Vector *yBar;
   Vector *yBarPrime;
   Vector *dirtyVector;
@@ -23,8 +14,20 @@ typedef struct ODEContext {
   short done;
 } ODEContext;
 
-ODEContext *makeODEContext(double eps, int size, Matrix *odeSystem, Vector *yBar, double a, double b);
+ODEContext *
+makeODEContext(double eps,
+               int size,
+               Matrix *odeSystem,
+               Vector *yBar,
+               double a,
+               double b);
 
-void eulersMethodStep(ODEContext *context);
-void eulersMethod(ODEContext *context);
+void
+eulersMethodStep(ODEContext * context);
+
+void
+eulersMethod(ODEContext * context);
+
+void
+freeODEContext(ODEContext * context);
 #endif
