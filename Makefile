@@ -1,16 +1,25 @@
-all: solver
+cursesExample: nm.o vma.o cursesExample.o
+	gcc nm.o vma.o cursesExample.o -lm -lcurses -o cursesExample
+	rm *.o
 
-solver: nm.o vma.o main.o
-	gcc -g nm.o vma.o main.o -lm -o solver
+cursesExample.o:
+	gcc -c examples/cursesExample.c -o cursesExample.o
+
+example: nm.o vma.o example.o
+	gcc nm.o vma.o example.o -lm -o example
+	rm *.o
+
+example.o:
+	gcc -c examples/example.c -o example.o
 
 nm.o:
-	gcc -g -c src/NumericalMethods.c -o nm.o
+	gcc -c src/NumericalMethods.c -o nm.o
 
 vma.o:
-	gcc -g -c src/VectorMatrixAlgebra.c -o vma.o
+	gcc -c src/VectorMatrixAlgebra.c -o vma.o
 
 main.o:
-	gcc -g -c src/main.c -o main.o
+	gcc -c src/main.c -o main.o
 
 HowItWorks.pdf: hiw.tex
 	pdflatex -interaction=nonstopmode hiw.tex -o HowItWorks.pdf
@@ -20,9 +29,3 @@ hiw.tex:
 
 clean:
 	rm *.o
-
-run: solver
-	./solver
-
-debug: solver
-	lldb solver
